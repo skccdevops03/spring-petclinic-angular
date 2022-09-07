@@ -15,15 +15,14 @@ pipeline {
             appWaitTimeout = 60
         }
     
-    stages {
-        
+    stages {        
         stage('Build Docker image') {
           angent any
             steps {                  
                 script {
                         APP_IMAGE = docker.build("${IMAGE_REPO}/${IMAGE_NAME}:${BUILD_NUMBER}")
                 }
-              }              
+            }              
         }
         stage('Push Docker image') {
             steps {              
@@ -37,8 +36,7 @@ pipeline {
         }
         
         stage('Update manifest') {
-          angent any
-    
+          angent any    
             steps {
               sh """
                 git config --global user.name 'skccdevops03'
