@@ -17,7 +17,7 @@ pipeline {
     
     stages {        
         stage('Build Docker image') {
-          angent any
+          agent any
             steps {                  
                 script {
                         APP_IMAGE = docker.build("${IMAGE_REPO}/${IMAGE_NAME}:${BUILD_NUMBER}")
@@ -37,7 +37,7 @@ pipeline {
         }
         
         stage('Update manifest') {
-          angent any    
+          agent any    
             steps {
               sh """
                 git config --global user.name 'skccdevops03'
