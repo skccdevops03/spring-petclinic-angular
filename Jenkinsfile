@@ -3,8 +3,7 @@ pipeline {
     
     environment {
             IMAGE_REPO = 'repo-spring-petclinic-angular'
-            IMAGE_NAME = 'spring-petclinic-angular'
-            IMAGE_TAG = sh(returnStdout: true, script: '(git rev-parse --short HEAD && echo "_$BUILD_NUMBER") | tr -d "\n"').trim()
+            IMAGE_NAME = 'spring-petclinic-angular'            
             REGISTRY_URL = 'http://3.38.12.213:8000'
             REGISTRY_CREDENTIALS = 'credential_harbor'
             ArgoURL='a7660fd42c35b4042a127136f7e294f0-880594388.ap-northeast-2.elb.amazonaws.com/'
