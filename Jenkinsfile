@@ -1,10 +1,10 @@
 pipeline {
     agent {
-    kubernetes {
-      label 'petclinic-angular-cd'
-      yamlFile 'jenkins-agent-pod.yaml'
+      kubernetes {
+        label 'petclinic-angular-cd'
+        yamlFile 'jenkins-agent-pod.yaml'
+      }
     }
-  }
     
     environment {
             GIT_COMMIT_SHORT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -79,4 +79,5 @@ pipeline {
           }
         }
 
+    }
 }
