@@ -25,6 +25,7 @@ pipeline {
             }              
         }
         stage('Push Docker image') {
+          agent any
             steps {              
                 script {
                     docker.withRegistry(REGISTRY_URL, REGISTRY_CREDENTIALS) {
