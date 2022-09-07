@@ -44,32 +44,29 @@ pipeline {
             }
         }
         
-    }
-
-    stage('Update manifest') {
+        stage('Update manifest') {
     
-      steps {
-        sh """
-          git config --global user.name 'skccdevops03'
-          git config --global user.email 'skcc.devops03@sk.com'
-          git config --global credential.helper cache
-          git config --global push.default simple
-        """
-        git url: 'https://github.com/skccdevops03/pet-angular-argocd-helm.git', credentialsId: 'credential_git', branch: 'main'
-        sh """
-          sed -i 's/tag:.*/tag: "${BUILD_NUMBER}"/g' values.yaml
-          git add values.yaml
-          git commit -m 'Update Docker image tag: ${BUILD_NUMBER}'
-          git push origin main
-        """
-      }
-    }  
-    
+            steps {
+              sh """
+                git config --global user.name 'skccdevops03'
+                git config --global user.email 'skcc.devops03@sk.com'
+                git config --global credential.helper cache
+                git config --global push.default simple
+              """
+              git url: 'https://github.com/skccdevops03/pet-angular-argocd-helm.git', credentialsId: 'credential_git', branch: 'main'
+              sh """
+                sed -i 's/tag:.*/tag: "${BUILD_NUMBER}"/g' values.yaml
+                git add values.yaml
+                git commit -m 'Update Docker image tag: ${BUILD_NUMBER}'
+                git push origin main
+              """
+            }
+        }    
   
-     stage('Argo'){
-       steps {
-       withCredentials([usernamePassword(credentialsId: 'credential_argocd', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_PWD')]) {
-        container('argocd') {
+        stage('Argo'){
+          steps {
+          withCredentials([usernamePassword(credentialsId: 'credential_argocd', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_PWD')]) {
+            container('argocd') {
                 sh """
                 yes | argocd login --insecure ${ArgoURL} --username ${ARGOCD_USER} --password ${ARGOCD_PWD}
                 argocd app sync ${argocdAppPrefix}
@@ -77,9 +74,9 @@ pipeline {
                 argocd logout ${ArgoURL}
                 sleep 10
                 """
+            }
           }
-       }
-       }
-     }
+          }
+        }
 
 }
