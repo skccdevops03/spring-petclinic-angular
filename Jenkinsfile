@@ -16,7 +16,7 @@ pipeline {
           agent any
             steps {                  
                 script {
-                        APP_IMAGE = docker.build("${IMAGE_REPO}/${IMAGE_NAME}:${BUILD_NUMBER}")
+                        APP_IMAGE = docker.build("${IMAGE_REPO}/${IMAGE_NAME}:${BUILD_NUMBER}", "-f Dockerfile ./ --network=host")
                 }
             }              
         }
