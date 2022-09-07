@@ -25,9 +25,9 @@ pipeline {
           agent any
             steps {              
                 script {
-                    docker.withRegistry(REGISTRY_URL, REGISTRY_CREDENTIALS) {
+                  docker.withRegistry(REGISTRY_URL, REGISTRY_CREDENTIALS) {
                     APP_IMAGE.push()
-                        APP_IMAGE.push('latest')
+                    APP_IMAGE.push('latest')
                     }
                 }                     
             }
@@ -55,7 +55,7 @@ pipeline {
         stage('Argo'){
           agent {
            kubernetes {
-             label 'petclinic-cd'
+             label 'petc-angular-cd'
               yamlFile 'jenkins-agent-pod.yaml'
            }
           }
