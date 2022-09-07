@@ -6,7 +6,7 @@ pipeline {
             IMAGE_NAME = 'spring-petclinic-angular'            
             REGISTRY_URL = 'http://3.38.12.213:8000'
             REGISTRY_CREDENTIALS = 'credential_harbor'
-            ArgoURL='a7660fd42c35b4042a127136f7e294f0-880594388.ap-northeast-2.elb.amazonaws.com/'
+            ArgoURL='a7660fd42c35b4042a127136f7e294f0-880594388.ap-northeast-2.elb.amazonaws.com'
             argocdAppPrefix='pet-angular-argocd-helm'
             appWaitTimeout = 60
         }
