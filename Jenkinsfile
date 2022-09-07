@@ -24,22 +24,23 @@ pipeline {
         
         stage('Build Docker image') {
             steps {
-                   
+              container('docker') {                   
                 script {
                         APP_IMAGE = docker.build("${IMAGE_REPO}/${IMAGE_NAME}:${BUILD_NUMBER}")
-                }   
-              
+                }
+              }              
             }
         }
         stage('Push Docker image') {
             steps {
-              
+              container('docker') {              
                 script {
                     docker.withRegistry(REGISTRY_URL, REGISTRY_CREDENTIALS) {
                     APP_IMAGE.push()
                         APP_IMAGE.push('latest')
                     }
                 }
+              }
                       
             }
         }
