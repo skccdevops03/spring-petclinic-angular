@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-      kubernetes {
-        label 'petclinic-angular-cd'
-        yamlFile 'jenkins-agent-pod.yaml'
-      }
-    }
+    agent none
     
     environment {
             GIT_COMMIT_SHORT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
@@ -23,29 +18,26 @@ pipeline {
     stages {
         
         stage('Build Docker image') {
-            steps {
-              container('docker') {                   
+          angent any
+            steps {                  
                 script {
                         APP_IMAGE = docker.build("${IMAGE_REPO}/${IMAGE_NAME}:${BUILD_NUMBER}")
                 }
               }              
-            }
         }
         stage('Push Docker image') {
-            steps {
-              container('docker') {              
+            steps {              
                 script {
                     docker.withRegistry(REGISTRY_URL, REGISTRY_CREDENTIALS) {
                     APP_IMAGE.push()
                         APP_IMAGE.push('latest')
                     }
-                }
-              }
-                      
+                }                     
             }
         }
         
         stage('Update manifest') {
+          angent any
     
             steps {
               sh """
@@ -65,6 +57,12 @@ pipeline {
         }    
   
         stage('Argo'){
+          agent {
+           kubernetes {
+             label 'petclinic-cd'
+              yamlFile 'jenkins-agent-pod.yaml'
+           }
+          }
           steps {
           withCredentials([usernamePassword(credentialsId: 'credential_argocd', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_PWD')]) {
             container('argocd') {
